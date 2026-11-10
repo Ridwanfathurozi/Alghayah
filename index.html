@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alghayah - Media Pembelajaran Matematika Integrasi Al-Qur'an</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js for Graph Visualizer -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            line-height: 2.2;
+        }
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#059669 0.5px, transparent 0.5px), radial-gradient(#059669 0.5px, #f8fafc 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0,10px 10px;
+            background-opacity: 0.05;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-emerald-700 text-amber-400 rounded-xl flex items-center justify-center text-2xl shadow-md border border-emerald-600">
+                        <i class="fa-solid font-bold">الْغَايَة</i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-extrabold text-emerald-900 tracking-tight">Alghayah</span>
+                        <p class="text-xs text-emerald-600 font-medium">Matematika & Integrasi Al-Qur'an</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2 font-medium text-slate-700">
+                    <a href="utama.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Beranda</a>
+                    <a href="integrasi ayat.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Integrasi Ayat</a>
+                    <a href="materi spldv.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Materi SPLDV</a>
+                    <a href="simulasi.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Simulasi Interaktif</a>
+                    <a href="kalkulator.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Kalkulator Grafik</a>
+                    <a href="latihan soal.html" class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition">Latihan Soal</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+            <a href="#beranda" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Beranda</a>
+            <a href="#integrasi" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Integrasi Ayat</a>
+            <a href="#materi" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Materi SPLDV</a>
+            <a href="#simulasi" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Simulasi Interaktif</a>
+            <a href="#kalkulator" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Kalkulator Grafik</a>
+            <a href="#latihan" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">Latihan Soal</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="relative overflow-hidden bg-gradient-to-b from-emerald-900 via-emerald-800 to-slate-900 text-white py-20 lg:py-28">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-emerald-800/80 border border-emerald-600 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-amber-300">
+                        <i class="fa-solid fa-book-quran"></i>
+                        <span>Pembelajaran Berbasis Contextual Problem Solving</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                        Menggali Keajaiban <span class="text-amber-400 underline decoration-amber-500/50">Matematika</span> Dalam Al-Qur'an
+                    </h1>
+                    <p class="text-slate-200 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Selamat datang di <strong class="text-white">Alghayah</strong>. Pelajari Sistem Persamaan Linear Dua Variabel (SPLDV) melalui deduksi pemodelan kontekstual ayat Al-Qur'an: <b>QS. Luqman [31]: 14</b> & <b>QS. Al-Ahqaf [46]: 15</b>.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#simulasi" class="inline-flex items-center justify-center px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-play-circle mr-2 text-lg"></i> Mulai Simulasi
+                        </a>
+                        <a href="#integrasi" class="inline-flex items-center justify-center px-6 py-3.5 bg-emerald-800/80 hover:bg-emerald-700 border border-emerald-600 text-white font-semibold rounded-xl transition">
+                            <i class="fa-solid fa-scroll mr-2"></i> Pelajari Integrasi Ayat
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="bg-emerald-950/60 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-emerald-600/40 shadow-2xl relative">
+                        <div class="absolute -top-3 -right-3 bg-amber-500 text-slate-900 font-extrabold text-xs px-3 py-1 rounded-full shadow">
+                            Deduksi Ali bin Abi Thalib (RA)
+                        </div>
+                        <h3 class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-2">Persamaan Rabbani</h3>
+                        <div class="space-y-4 text-sm text-emerald-100">
+                            <div class="p-3 bg-emerald-900/60 rounded-xl border border-emerald-700/50">
+                                <p class="font-semibold text-white">QS. Al-Ahqaf: 15</p>
+                                <p class="italic text-xs text-emerald-200">Kandungan + Menyapih = 30 Bulan</p>
+                                <div class="mt-1 font-mono text-amber-300 font-bold">x + y = 30</div>
+                            </div>
+                            <div class="p-3 bg-emerald-900/60 rounded-xl border border-emerald-700/50">
+                                <p class="font-semibold text-white">QS. Luqman: 14</p>
+                                <p class="italic text-xs text-emerald-200">Masa Menyapih Maksimal = 2 Tahun (24 Bulan)</p>
+                                <div class="mt-1 font-mono text-amber-300 font-bold">y = 24</div>
+                            </div>
+                            <div class="p-3 bg-amber-500/20 border border-amber-500/40 rounded-xl text-amber-200">
+                                <p class="font-bold text-amber-300"><i class="fa-solid fa-lightbulb mr-1"></i> Hasil Penyelesaian SPLDV:</p>
+                                <p class="text-xs">Masa kandungan minimal (x) = <b>30 - 24 = 6 Bulan</b>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTEGRASI AYAT AL-QUR'AN SECTION -->
+    <section id="integrasi" class="py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Landasan Wahyu & Sains</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Integrasi QS. Al-Ahqaf [46]: 15 & QS. Luqman [31]: 14</h2>
+                <p class="text-slate-600 mt-4 text-base">
+                    Al-Qur'an tidak hanya memuat hukum syariat, melainkan juga konsep kuantitatif yang presisi. Mari kita bedah dua ayat mulia yang menjadi dasar pemodelan matematis ini.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- QS. Al-Ahqaf: 15 -->
+                <div class="bg-emerald-50/50 border border-emerald-200 rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:shadow-xl transition duration-300">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-full">Surah Al-Ahqaf Ayat 15</span>
+                            <span class="text-emerald-700 font-bold text-sm"><i class="fa-solid fa-book-open mr-1"></i> Juz 26</span>
+                        </div>
+                        <!-- Arabic Text -->
+                        <p class="arabic-text text-right text-2xl sm:text-3xl font-semibold text-slate-800 my-4" dir="rtl">
+                            ...وَحَمْلُهُ وَفِصَالُهُ ثَلَاثُونَ شَهْرًا...
+                        </p>
+                        <!-- Translation -->
+                        <div class="text-slate-700 text-sm sm:text-base leading-relaxed bg-white p-4 rounded-2xl border border-emerald-100 mt-4">
+                            <p class="italic text-slate-600">
+                                "...Menganndungnya sampai menyapihnya adalah <strong>tiga puluh bulan</strong>..."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-emerald-200/60">
+                        <div class="flex items-center text-xs font-bold text-emerald-800 uppercase tracking-wide">
+                            <i class="fa-solid fa-calculator mr-2 text-amber-500"></i> Interpretasi Matematis
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                            Jumlah durasi kehamilan (<span class="font-mono font-bold text-emerald-700">x</span>) ditambah durasi menyapih (<span class="font-mono font-bold text-emerald-700">y</span>) bernilai tepat 30 bulan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- QS. Luqman: 14 -->
+                <div class="bg-emerald-50/50 border border-emerald-200 rounded-3xl p-6 sm:p-8 flex flex-col justify-between hover:shadow-xl transition duration-300">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-full">Surah Luqman Ayat 14</span>
+                            <span class="text-emerald-700 font-bold text-sm"><i class="fa-solid fa-book-open mr-1"></i> Juz 21</span>
+                        </div>
+                        <!-- Arabic Text -->
+                        <p class="arabic-text text-right text-2xl sm:text-3xl font-semibold text-slate-800 my-4" dir="rtl">
+                            ...وَوَصَّيْنَا الْإِنْسَانَ بِوَالِدَيْهِ حَمَلَتْهُ أُمُّهُ وَهْنًا عَلَىٰ وَهْنٍ وَفِصَالُهُ فِي عَامَيْنِ...
+                        </p>
+                        <!-- Translation -->
+                        <div class="text-slate-700 text-sm sm:text-base leading-relaxed bg-white p-4 rounded-2xl border border-emerald-100 mt-4">
+                            <p class="italic text-slate-600">
+                                "Dan Kami perintahkan kepada manusia (berbuat baik) kepada dua orang ibu-bapaknya; ibunya telah mengandungnya dalam keadaan lemah yang bertambah-tambah, dan <strong>menyapihnya dalam dua tahun</strong>..."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-emerald-200/60">
+                        <div class="flex items-center text-xs font-bold text-emerald-800 uppercase tracking-wide">
+                            <i class="fa-solid fa-calculator mr-2 text-amber-500"></i> Interpretasi Matematis
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                            Durasi maksimal menyapih anak (<span class="font-mono font-bold text-emerald-700">y</span>) adalah 2 tahun = 24 bulan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Fiqh Context Box -->
+            <div class="mt-10 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-l-4 border-amber-500 p-6 rounded-r-2xl">
+                <h4 class="text-lg font-bold text-slate-900 flex items-center">
+                    <i class="fa-solid fa-ribbon text-amber-500 mr-2"></i> Khasanah Ilmu Fiqih & Matematika Islam
+                </h4>
+                <p class="text-sm sm:text-base text-slate-700 mt-2 leading-relaxed">
+                    Diriwayatkan dalam kitab Fiqih bahwa Khalifah Usman bin Affan (RA) pernah menghadapi kasus seorang wanita yang melahirkan anak pada usia kandungan 6 bulan. Para sahabat awalnya menduga itu hasil perzinahan. Namun, Ali bin Abi Thalib (RA) bersama Ibn Abbas (RA) menyelesaikan masalah ini secara matematis dengan menggabungkan QS. Al-Ahqaf: 15 (x + y = 30) dan QS. Luqman: 14 (y = 24). Beliau menyimpulkan bahwa x = 30 - 24 = 6 bulan, yang berarti <b>6 bulan adalah batas minimal usia kandungan janin yang sah dalam hukum Islam</b>!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MATERI SPLDV CONCEPT SECTION -->
+    <section id="materi" class="py-16 bg-slate-100 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Konsep Dasar Matematika</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Sistem Persamaan Linear Dua Variabel (SPLDV)</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Memahami fondasi matematika sebelum menyelesaikan masalah kontekstual nyata.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        1
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900">Bentuk Umum</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                        SPLDV terdiri dari dua persamaan linear yang memiliki dua variabel berpangkat satu.
+                    </p>
+                    <div class="mt-4 p-3 bg-slate-50 rounded-xl font-mono text-center text-xs sm:text-sm border border-slate-200 text-slate-800">
+                        a₁x + b₁y = c₁<br>
+                        a₂x + b₂y = c₂
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        2
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900">Metode Penyelesaian</h3>
+                    <ul class="text-xs sm:text-sm text-slate-600 mt-2 space-y-1.5 list-disc list-inside">
+                        <li><b>Substitusi:</b> Mengganti variabel satu ke persamaan lain.</li>
+                        <li><b>Eliminasi:</b> Menghilangkan salah satu variabel.</li>
+                        <li><b>Campuran:</b> Gabungan eliminasi & substitusi.</li>
+                        <li><b>Grafik:</b> Titik potong dari dua garis linear.</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        3
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900">Pemecahan Kontekstual</h3>
+                    <ol class="text-xs sm:text-sm text-slate-600 mt-2 space-y-1 list-decimal list-inside">
+                        <li>Definisikan pemisalan variabel (x dan y).</li>
+                        <li>Susun model matematika dari narasi.</li>
+                        <li>Selesaikan sistem persamaan.</li>
+                        <li>Tarik kesimpulan sesuai konteks soal.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIMULASI INTERAKTIF KASUS AL-QURAN -->
+    <section id="simulasi" class="py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Simulasi Interaktif Step-by-Step</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Solusi Pemodelan Ayat Al-Qur'an</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Ikuti langkah interaktif berikut untuk memahami bagaimana nilai variabel ditemukan dari Al-Qur'an.
+                </p>
+            </div>
+
+            <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden relative border border-slate-800">
+                <div class="flex flex-wrap border-b border-slate-800 mb-8 pb-4 justify-center sm:justify-start gap-2">
+                    <button id="step1Btn" onclick="switchStep(1)" class="step-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-600 text-white">
+                        1. Pemisalan Variabel
+                    </button>
+                    <button id="step2Btn" onclick="switchStep(2)" class="step-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-400 hover:text-white">
+                        2. Model Matematika
+                    </button>
+                    <button id="step3Btn" onclick="switchStep(3)" class="step-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-400 hover:text-white">
+                        3. Metode Penyelesaian
+                    </button>
+                    <button id="step4Btn" onclick="switchStep(4)" class="step-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-400 hover:text-white">
+                        4. Kesimpulan Fiqih & Sains
+                    </button>
+                </div>
+
+                <!-- Step Content Boxes -->
+                <div id="step1" class="step-content">
+                    <h3 class="text-2xl font-bold text-amber-400 mb-4">Langkah 1: Menentukan Pemisalan Variabel</h3>
+                    <p class="text-slate-300 text-sm sm:text-base mb-6">
+                        Dari teks ayat, terdapat dua besaran waktu yang tidak diketahui nilainya jika kita belum menganalisisnya. Kita tentukan variabelnya:
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+                            <span class="text-emerald-400 font-mono text-xl font-bold">x</span>
+                            <p class="text-white font-semibold mt-1">Masa Mengandung / Kehamilan</p>
+                            <p class="text-slate-400 text-xs mt-1">Durasi ibu mengandung janin dalam rahim (satuan: bulan).</p>
+                        </div>
+                        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+                            <span class="text-emerald-400 font-mono text-xl font-bold">y</span>
+                            <p class="text-white font-semibold mt-1">Masa Menyapih Anak</p>
+                            <p class="text-slate-400 text-xs mt-1">Durasi memberikan ASI hingga anak disapih (satuan: bulan).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step2" class="step-content hidden">
+                    <h3 class="text-2xl font-bold text-amber-400 mb-4">Langkah 2: Membentuk Sistem Persamaan Linear</h3>
+                    <p class="text-slate-300 text-sm sm:text-base mb-6">
+                        Susun kalimat verbal dalam ayat menjadi bentuk aljabar matematika:
+                    </p>
+                    <div class="space-y-4">
+                        <div class="bg-slate-800/80 p-4 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="bg-emerald-600/30 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-md">QS. Al-Ahqaf: 15</span>
+                                <p class="text-sm text-slate-300 mt-1">"Menganndungnya sampai menyapihnya adalah 30 bulan"</p>
+                            </div>
+                            <span class="font-mono text-xl font-bold text-amber-400">x + y = 30</span>
+                        </div>
+                        <div class="bg-slate-800/80 p-4 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="bg-emerald-600/30 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-md">QS. Luqman: 14</span>
+                                <p class="text-sm text-slate-300 mt-1">"Menyapihnya dalam dua tahun (2 × 12 bulan)"</p>
+                            </div>
+                            <span class="font-mono text-xl font-bold text-amber-400">y = 24</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step3" class="step-content hidden">
+                    <h3 class="text-2xl font-bold text-amber-400 mb-4">Langkah 3: Menggunakan Metode Substitusi</h3>
+                    <p class="text-slate-300 text-sm sm:text-base mb-4">
+                        Substitusikan nilai <span class="font-mono text-amber-400 font-bold">y = 24</span> dari Persamaan (2) ke dalam Persamaan (1):
+                    </p>
+                    <div class="bg-slate-800 p-6 rounded-2xl font-mono text-emerald-300 text-sm sm:text-base space-y-2 border border-slate-700">
+                        <p>x + y = 30</p>
+                        <p class="text-amber-300">x + (24) = 30</p>
+                        <p>x = 30 - 24</p>
+                        <p class="text-2xl font-bold text-emerald-400 pt-2">x = 6 Bulan</p>
+                    </div>
+                </div>
+
+                <div id="step4" class="step-content hidden">
+                    <h3 class="text-2xl font-bold text-amber-400 mb-4">Langkah 4: Interpretasi & Hikmah Syariah</h3>
+                    <div class="bg-emerald-900/40 p-6 rounded-2xl border border-emerald-500/40 space-y-3">
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-base sm:text-lg">Masa Kandungan Minimal = 6 Bulan</h4>
+                                <p class="text-slate-300 text-xs sm:text-sm mt-1">
+                                    Secara medis & ilmu kebidanan modern, janin berusia 24 minggu (6 bulan) adalah usia *viabilitas* minimal di mana paru-paru dan organ janin telah siap untuk bertahan hidup di luar rahim.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 pt-3 border-t border-emerald-800">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-base sm:text-lg">Masa Menyusui Sempurna = 24 Bulan (2 Tahun)</h4>
+                                <p class="text-slate-300 text-xs sm:text-sm mt-1">
+                                    WHO dan ilmu kesehatan anak menyarankan pemberian ASI eksklusif hingga 2 tahun untuk pembentukan sistem imun yang optimal.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="mt-8 flex justify-between items-center pt-4 border-t border-slate-800">
+                    <button id="prevBtn" onclick="navigateStep(-1)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs sm:text-sm font-semibold disabled:opacity-40" disabled>
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Sebelumnya
+                    </button>
+                    <span id="stepIndicator" class="text-xs text-slate-400 font-medium">Langkah 1 dari 4</span>
+                    <button id="nextBtn" onclick="navigateStep(1)" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs sm:text-sm font-bold">
+                        Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KALKULTOR & GRAPH VISUALIZER SECTION -->
+    <section id="kalkulator" class="py-16 bg-slate-100 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Eksplorasi Mandiri</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Kalkulator & Visualisasi Grafik SPLDV</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Uji coba berbagai persamaan linear dua variabel dan lihat perpotongan grafiknya secara otomatis!
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Input Controls -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b pb-3 flex items-center">
+                        <i class="fa-solid fa-sliders text-emerald-600 mr-2"></i> Input Koefisien Persamaan
+                    </h3>
+
+                    <!-- Persamaan 1 -->
+                    <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
+                        <p class="text-xs font-bold text-emerald-800 uppercase mb-2">Persamaan 1: a₁x + b₁y = c₁</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">a₁ (x)</label>
+                                <input type="number" id="a1" value="1" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">b₁ (y)</label>
+                                <input type="number" id="b1" value="1" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">c₁ (Konstanta)</label>
+                                <input type="number" id="c1" value="30" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persamaan 2 -->
+                    <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-100">
+                        <p class="text-xs font-bold text-amber-800 uppercase mb-2">Persamaan 2: a₂x + b₂y = c₂</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">a₂ (x)</label>
+                                <input type="number" id="a2" value="0" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">b₂ (y)</label>
+                                <input type="number" id="b2" value="1" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">c₂ (Konstanta)</label>
+                                <input type="number" id="c2" value="24" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateAndGraph()" class="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-md transition">
+                        <i class="fa-solid fa-chart-line mr-2"></i> Hitung & Plot Grafik
+                    </button>
+
+                    <!-- Result Box -->
+                    <div id="calcResult" class="p-4 bg-slate-900 text-white rounded-2xl space-y-2">
+                        <p class="text-xs text-slate-400 uppercase font-bold">Titik Potong / Penyelesaian (x, y):</p>
+                        <div class="text-xl font-extrabold text-amber-400 font-mono" id="solutionText">
+                            (x = 6, y = 24)
+                        </div>
+                        <p class="text-xs text-slate-300" id="explanationText">
+                            Artinya garis Persamaan 1 dan Persamaan 2 berpotongan tepat di koordinat (6, 24).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Canvas Graph Visualizer -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center">
+                        <i class="fa-solid fa-circle-nodes text-amber-500 mr-2"></i> Visualisasi Titik Potong Garis
+                    </h3>
+                    <div class="relative w-full h-[360px] sm:h-[400px]">
+                        <canvas id="spldvChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LATIHAN SOAL PEMECAHAN MASALAH KONTEKSTUAL -->
+    <section id="latihan" class="py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Uji Pemahaman Kontekstual</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Latihan Soal Pemecahan Masalah</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Asah kemampuan pemodelan SPLDV dengan kasus kehidupan sehari-hari dan nilai-nilai Islami.
+                </p>
+            </div>
+
+            <!-- Quiz Container -->
+            <div class="max-w-3xl mx-auto space-y-8">
+                <!-- Soal 1 -->
+                <div class="bg-slate-50 border border-slate-200 p-6 sm:p-8 rounded-3xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Soal 1: Perdagangan Kurma & Zaitun</span>
+                        <span class="text-xs font-semibold text-slate-500">Kontekstual Ekonomi Syariah</span>
+                    </div>
+                    <p class="text-slate-800 font-medium text-sm sm:text-base leading-relaxed">
+                        Ahmad membeli 3 kg Kurma Ajwa dan 2 liter Minyak Zaitun dengan total harga Rp 420.000. Di toko yang sama, Fatimah membeli 1 kg Kurma Ajwa dan 3 liter Minyak Zaitun seharga Rp 350.000. Tentukan harga 1 kg Kurma Ajwa (x) dan 1 liter Minyak Zaitun (y).
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button onclick="checkQuiz(1, 'A', false)" class="q1-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            A. Kurma = Rp 110.000, Zaitun = Rp 75.000
+                        </button>
+                        <button onclick="checkQuiz(1, 'B', true)" class="q1-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            B. Kurma = Rp 80.000, Zaitun = Rp 90.000
+                        </button>
+                        <button onclick="checkQuiz(1, 'C', false)" class="q1-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            C. Kurma = Rp 100.000, Zaitun = Rp 60.000
+                        </button>
+                        <button onclick="checkQuiz(1, 'D', false)" class="q1-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            D. Kurma = Rp 90.000, Zaitun = Rp 80.000
+                        </button>
+                    </div>
+                    <div id="quizResult1" class="hidden p-4 rounded-2xl text-xs sm:text-sm leading-relaxed"></div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="bg-slate-50 border border-slate-200 p-6 sm:p-8 rounded-3xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Soal 2: Sedekah Paket Sembako</span>
+                        <span class="text-xs font-semibold text-slate-500">Kontekstual Sosial & Infaq</span>
+                    </div>
+                    <p class="text-slate-800 font-medium text-sm sm:text-base leading-relaxed">
+                        Panitia Zakat menyalurkan 50 paket sembako yang terdiri dari Paket Beras (x) dan Paket Minyak (y). Total anggaran yang dikeluarkan adalah Rp 5.000.000. Jika harga Paket Beras Rp 120.000 dan Paket Minyak Rp 80.000, berapa jumlah masing-masing paket sembako yang disalurkan?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button onclick="checkQuiz(2, 'A', false)" class="q2-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            A. Beras = 20 paket, Minyak = 30 paket
+                        </button>
+                        <button onclick="checkQuiz(2, 'B', true)" class="q2-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            B. Beras = 25 paket, Minyak = 25 paket
+                        </button>
+                        <button onclick="checkQuiz(2, 'C', false)" class="q2-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            C. Beras = 30 paket, Minyak = 20 paket
+                        </button>
+                        <button onclick="checkQuiz(2, 'D', false)" class="q2-opt p-3 text-left bg-white border border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm font-medium transition">
+                            D. Beras = 15 paket, Minyak = 35 paket
+                        </button>
+                    </div>
+                    <div id="quizResult2" class="hidden p-4 rounded-2xl text-xs sm:text-sm leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-slate-900 text-white border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-6 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-emerald-700 text-amber-400 rounded-xl flex items-center justify-center font-bold text-xl">
+                            غ
+                        </div>
+                        <span class="text-2xl font-black text-white tracking-tight">Alghayah</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-md">
+                        Media Pembelajaran Matematika Integrasi Al-Qur'an. Berfokus pada pengembangan berpikir kritis dan pemecahan masalah kontekstual bermuatan nilai Islam.
+                    </p>
+                </div>
+                <div class="md:col-span-6 md:text-right space-y-2">
+                    <p class="text-xs text-slate-400">Referensi Utama Tafsir & Fiqih:</p>
+                    <p class="text-xs text-amber-400 font-semibold">Tafsir Ibn Katsir (QS. Al-Ahqaf: 15 & QS. Luqman: 14)</p>
+                    <p class="text-xs text-slate-500">© 2026 Alghayah. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Interactive Steps Handler
+        let currentStep = 1;
+        function switchStep(step) {
+            currentStep = step;
+            for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById(`step${i}`);
+                const btn = document.getElementById(`step${i}Btn`);
+                if (i === step) {
+                    el.classList.remove('hidden');
+                    btn.className = "step-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-600 text-white shadow-md";
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = "step-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-400 hover:text-white";
+                }
+            }
+            
+            // Update buttons & indicators
+            document.getElementById('prevBtn').disabled = (step === 1);
+            document.getElementById('nextBtn').disabled = (step === 4);
+            document.getElementById('stepIndicator').innerText = `Langkah ${step} dari 4`;
+        }
+
+        function navigateStep(direction) {
+            let next = currentStep + direction;
+            if (next >= 1 && next <= 4) {
+                switchStep(next);
+            }
+        }
+
+        // Chart.js Setup for SPLDV Calculator
+        let spldvChartInstance = null;
+
+        function calculateAndGraph() {
+            const a1 = parseFloat(document.getElementById('a1').value) || 0;
+            const b1 = parseFloat(document.getElementById('b1').value) || 0;
+            const c1 = parseFloat(document.getElementById('c1').value) || 0;
+
+            const a2 = parseFloat(document.getElementById('a2').value) || 0;
+            const b2 = parseFloat(document.getElementById('b2').value) || 0;
+            const c2 = parseFloat(document.getElementById('c2').value) || 0;
+
+            // Determinant
+            const D = a1 * b2 - a2 * b1;
+            const Dx = c1 * b2 - c2 * b1;
+            const Dy = a1 * c2 - a2 * c1;
+
+            const solBox = document.getElementById('calcResult');
+            const solText = document.getElementById('solutionText');
+            const expText = document.getElementById('explanationText');
+
+            let xIntersection = null;
+            let yIntersection = null;
+
+            if (D === 0) {
+                if (Dx === 0 && Dy === 0) {
+                    solText.innerText = "Tak Hingga Solusi";
+                    expText.innerText = "Kedua garis berimpit.";
+                } else {
+                    solText.innerText = "Tidak Ada Solusi";
+                    expText.innerText = "Kedua garis sejajar dan tidak saling memotong.";
+                }
+            } else {
+                xIntersection = Dx / D;
+                yIntersection = Dy / D;
+                solText.innerText = `(x = ${xIntersection.toFixed(2)}, y = ${yIntersection.toFixed(2)})`;
+                expText.innerText = `Titik perpotongan kedua persamaan bernilai x = ${xIntersection.toFixed(2)} dan y = ${yIntersection.toFixed(2)}.`;
+            }
+
+            // Generate graph data points
+            const xMin = 0;
+            const xMax = Math.max(35, (xIntersection ? Math.ceil(xIntersection + 10) : 35));
+            const step = (xMax - xMin) / 10;
+            
+            const xValues = [];
+            const line1Values = [];
+            const line2Values = [];
+
+            for (let x = xMin; x <= xMax; x += step) {
+                xValues.push(x.toFixed(1));
+                
+                // y = (c1 - a1*x) / b1
+                if (b1 !== 0) {
+                    line1Values.push((c1 - a1 * x) / b1);
+                } else {
+                    line1Values.push(null);
+                }
+
+                // y = (c2 - a2*x) / b2
+                if (b2 !== 0) {
+                    line2Values.push((c2 - a2 * x) / b2);
+                } else {
+                    line2Values.push(c2 / b2);
+                }
+            }
+
+            // Render Chart
+            const ctx = document.getElementById('spldvChart').getContext('2d');
+            
+            if (spldvChartInstance) {
+                spldvChartInstance.destroy();
+            }
+
+            const datasets = [
+                {
+                    label: `Garis 1: ${a1}x + ${b1}y = ${c1}`,
+                    data: line1Values,
+                    borderColor: '#059669',
+                    backgroundColor: '#059669',
+                    borderWidth: 3,
+                    tension: 0.1,
+                    fill: false
+                },
+                {
+                    label: `Garis 2: ${a2}x + ${b2}y = ${c2}`,
+                    data: line2Values,
+                    borderColor: '#f59e0b',
+                    backgroundColor: '#f59e0b',
+                    borderWidth: 3,
+                    tension: 0.1,
+                    fill: false
+                }
+            ];
+
+            // If valid intersection point, highlight it
+            if (xIntersection !== null && yIntersection !== null) {
+                datasets.push({
+                    label: 'Titik Potong (Solusi)',
+                    data: [{ x: xIntersection, y: yIntersection }],
+                    backgroundColor: '#ef4444',
+                    borderColor: '#ef4444',
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
+                    type: 'scatter'
+                });
+            }
+
+            spldvChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xValues,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: 'Nilai x (Masa Kandungan / Variabel 1)' },
+                            min: 0
+                        },
+                        y: {
+                            title: { display: true, text: 'Nilai y (Masa Menyapih / Variabel 2)' },
+                            min: 0
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: (${context.parsed.x.toFixed(1)}, ${context.parsed.y.toFixed(1)})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Quiz Checker Function
+        function checkQuiz(qNum, choice, isCorrect) {
+            const resBox = document.getElementById(`quizResult${qNum}`);
+            resBox.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900', 'border-emerald-300', 'border-rose-300');
+            
+            if (isCorrect) {
+                resBox.classList.add('bg-emerald-100', 'text-emerald-900', 'border', 'border-emerald-300');
+                if (qNum === 1) {
+                    resBox.innerHTML = `
+                        <p class="font-bold text-base mb-1"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Benar sekali! (Pilihan B)</p>
+                        <p><b>Pembahasan:</b><br>
+                        Misal Kurma = x, Zaitun = y.<br>
+                        Persamaan (1): 3x + 2y = 420.000<br>
+                        Persamaan (2): 1x + 3y = 350.000 &rightarrow; x = 350.000 - 3y<br>
+                        Substitusi ke Persamaan (1):<br>
+                        3(350.000 - 3y) + 2y = 420.000 &rightarrow; 1.050.000 - 7y = 420.000 &rightarrow; 7y = 630.000 &rightarrow; <b>y = Rp 90.000</b> (Zaitun).<br>
+                        Maka x = 350.000 - 3(90.000) = <b>Rp 80.000</b> (Kurma).
+                        </p>
+                    `;
+                } else if (qNum === 2) {
+                    resBox.innerHTML = `
+                        <p class="font-bold text-base mb-1"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Benar sekali! (Pilihan B)</p>
+                        <p><b>Pembahasan:</b><br>
+                        Misal Beras = x, Minyak = y.<br>
+                        Persamaan (1): x + y = 50 &rightarrow; y = 50 - x<br>
+                        Persamaan (2): 120.000x + 80.000y = 5.000.000 (Bagi 40.000 &rightarrow; 3x + 2y = 125)<br>
+                        Substitusi Persamaan (1): 3x + 2(50 - x) = 125 &rightarrow; 3x + 100 - 2x = 125 &rightarrow; <b>x = 25 paket Beras</b>.<br>
+                        Maka y = 50 - 25 = <b>25 paket Minyak</b>.
+                        </p>
+                    `;
+                }
+            } else {
+                resBox.classList.add('bg-rose-100', 'text-rose-900', 'border', 'border-rose-300');
+                resBox.innerHTML = `
+                    <p class="font-bold text-base mb-1"><i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> Jawaban Kurang Tepat (Pilihan ${choice})</p>
+                    <p>Coba eliminasi atau substitusikan variabel dengan lebih teliti, perhatikan kembali persamaan yang dibentuk dari soal!</p>
+                `;
+            }
+        }
+
+        // Initialize Plot on Page Load
+        window.onload = function() {
+            calculateAndGraph();
+        };
+    </script>
+</body>
+</html>

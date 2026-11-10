@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Soal HOTS SPLDV Interaktif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-6 font-sans">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-blue-400 mb-2">Generator & Latihan Soal HOTS SPLDV</h1>
+            <p class="text-slate-400">Pilih topik, tingkat kesulitan, lalu uji pemahaman Anda secara interaktif.</p>
+        </header>
+
+        <!-- Form Input -->
+        <div class="bg-slate-800 p-6 rounded-2xl shadow-lg border border-slate-700 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-slate-300">Topik Kontekstual</label>
+                    <input type="text" id="topik" value="Transaksi di Koperasi Sekolah" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-slate-300">Tingkat Kesulitan</label>
+                    <select id="tingkatKesulitan" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500">
+                        <option value="Sedang-Sukar">Sedang - Sukar (C4-C5)</option>
+                        <option value="Sukar/Tinggi">Sukar / HOTS Tinggi (C6)</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="buatSoal()" id="btnGenerate" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-lg transition duration-200">
+                Buat Soal Interaktif
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="hidden text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+            <p class="mt-2 text-slate-400">AI sedang merancang soal HOTS berkualitas...</p>
+        </div>
+
+        <!-- Container Soal -->
+        <div id="soalContainer" class="space-y-6"></div>
+    </div>
+
+    <script>
+        async function buatSoal() {
+            const topik = document.getElementById('topik').value;
+            const tingkatKesulitan = document.getElementById('tingkatKesulitan').value;
+            const container = document.getElementById('soalContainer');
+            const loading = document.getElementById('loading');
+            const btn = document.getElementById('btnGenerate');
+
+            container.innerHTML = '';
+            loading.classList.remove('hidden');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/buat-soal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topik, tingkatKesulitan })
+                });
+
+                const result = await response.json();
+                loading.classList.add('hidden');
+                btn.disabled = false;
+
+                if (result.success && Array.isArray(result.data)) {
+                    renderSoal(result.data);
+                } else {
+                    alert('Gagal memuat soal: ' + (result.message || 'Respons tidak valid'));
+                }
+            } catch (error) {
+                loading.classList.add('hidden');
+                btn.disabled = false;
+                alert('Terjadi kesalahan koneksi ke server backend.');
+                console.error(error);
+            }
+        }
+
+        function renderSoal(dataSoal) {
+            const container = document.getElementById('soalContainer');
+            
+            dataSoal.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-md';
+                
+                // Header Soal
+                let html = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-blue-900 text-blue-300 text-xs font-semibold px-2.5 py-1 rounded-full">Soal ${item.nomor || index + 1} (${item.level_kognitif})</span>
+                        <span class="text-xs text-slate-400">Indikator: ${item.indikator_hots || 'Analisis Kontekstual'}</span>
+                    </div>
+                    <p class="text-slate-200 mb-4 leading-relaxed font-medium">${item.soal}</p>
+                    <div class="space-y-2 mb-4" id="options-${index}">
+                `;
+
+                // Render Pilihan Ganda
+                item.pilihan.forEach((pil) => {
+                    const hurufOpsi = pil.charAt(0); // Mengambil huruf 'A', 'B', 'C', atau 'D'
+                    html += `
+                        <button onclick="pilihJawaban(${index}, '${hurufOpsi}', '${item.jawaban_benar}')" 
+                                id="opt-${index}-${hurufOpsi}" 
+                                class="option-btn-${index} w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 transition text-slate-300">
+                            ${pil}
+                        </button>
+                    `;
+                });
+
+                html += `</div>`;
+
+                // Area Pembahasan (Hidden Awal)
+                html += `
+                    <div id="pembahasan-${index}" class="hidden mt-4 p-4 rounded-xl border border-slate-700 bg-slate-900/80">
+                        <h4 id="status-jawaban-${index}" class="font-bold mb-2"></h4>
+                        <div class="text-sm text-slate-300 space-y-2">
+                            <p><strong>Model Matematika:</strong> ${item.model_matematika || '-'}</p>
+                            <p><strong>Langkah Penyelesaian & Analisis:</strong></p>
+                            <p class="bg-slate-800 p-3 rounded border border-slate-700 whitespace-pre-line">${item.langkah_penyelesaian || item.pembahasan || '-'}</p>
+                            <p class="text-emerald-400 font-semibold mt-2">Kesimpulan: ${item.kesimpulan || '-'}</p>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function pilihJawaban(soalIndex, pilihanUser, jawabanBenar) {
+            const options = document.querySelectorAll(`.option-btn-${soalIndex}`);
+            const pembahasanDiv = document.getElementById(`pembahasan-${soalIndex}`);
+            const statusH4 = document.getElementById(`status-jawaban-${soalIndex}`);
+
+            // Nonaktifkan semua tombol opsi pada soal ini setelah dipilih
+            options.forEach(btn => {
+                btn.disabled = true;
+                const huruf = btn.id.split('-')[2];
+                if (huruf === jawabanBenar) {
+                    btn.classList.remove('bg-slate-900/50', 'border-slate-700');
+                    btn.classList.add('bg-emerald-900/50', 'border-emerald-500', 'text-emerald-200');
+                } else if (huruf === pilihanUser && pilihanUser !== jawabanBenar) {
+                    btn.classList.remove('bg-slate-900/50', 'border-slate-700');
+                    btn.classList.add('bg-rose-900/50', 'border-rose-500', 'text-rose-200');
+                }
+            });
+
+            // Tampilkan status benar/salah
+            if (pilihanUser === jawabanBenar) {
+                statusH4.textContent = "✔ Jawaban Anda Benar!";
+                statusH4.className = "font-bold mb-2 text-emerald-400";
+            } else {
+                statusH4.textContent = `✖ Jawaban Anda Kurang Tepat. Kunci Jawaban yang benar adalah ${jawabanBenar}.`;
+                statusH4.className = "font-bold mb-2 text-rose-400";
+            }
+
+            // Munculkan kotak pembahasan langkah-langkah
+            pembahasanDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

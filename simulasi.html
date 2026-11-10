@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi - SPLDV Interaktif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #022c22;
+        }
+
+        .bar-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #064e3b;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f59e0b;
+            border-radius: 8px;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(245, 158, 11, 0.4); }
+            50% { border-color: rgba(245, 158, 11, 1); }
+        }
+
+        .highlight-box {
+            animation: pulse-border 2s infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen p-3 sm:p-6 md:p-8 flex flex-col items-center justify-start gap-8">
+
+    <!-- HEADER / BANNER KELAS PERAGA -->
+    <header class="w-full max-w-5xl bg-emerald-900/90 border border-emerald-700/60 p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden backdrop-blur-md">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="inline-flex items-center gap-2 bg-emerald-800/90 border border-amber-400/40 text-amber-300 px-3.5 py-1.5 rounded-full text-xs font-bold mb-3 shadow-inner">
+            <i class="fa-solid fa-shapes text-amber-400"></i> Media Pembelajaran Terpadu SPLDV
+        </div>
+        <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
+            Menggali Keajaiban <span class="text-amber-400">Matematika & SPLDV</span>
+        </h1>
+        <p class="text-emerald-100 text-xs sm:text-sm md:text-base mt-3 max-w-3xl leading-relaxed">
+            Media interaktif terpadu yang menggabungkan Simulasi Pemodelan Al-Qur'an, Papan Perkalian Silang (Aturan Cramer), serta Visualisasi Singapore Bar Model.
+        </p>
+    </header>
+
+    <!-- BAGIAN 1: SIMULASI INTERAKTIF KASUS AL-QUR'AN -->
+    <section id="simulasi-alquran" class="w-full max-w-5xl bg-emerald-950 rounded-3xl p-5 sm:p-8 shadow-2xl border-2 border-emerald-800 space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-emerald-800 pb-4 gap-2">
+            <div>
+                <span class="text-amber-400 font-bold uppercase tracking-wider text-xs">Modul 1: Pemodelan Kontekstual</span>
+                <h2 class="text-xl sm:text-3xl font-extrabold text-white mt-0.5">Simulasi Interaktif Case Al-Qur'an</h2>
+            </div>
+            <span class="bg-emerald-900 text-amber-300 text-xs font-semibold px-3 py-1.5 rounded-xl border border-emerald-700">
+                QS. Al-Ahqaf: 15 & QS. Luqman: 14
+            </span>
+        </div>
+
+        <!-- Step Navigation Tabs -->
+        <div class="flex flex-wrap border-b border-emerald-800 pb-4 justify-start gap-2">
+            <button id="step1Btn" onclick="switchStep(1)" class="step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-600 text-white shadow-md">
+                1. Pemisalan Variabel
+            </button>
+            <button id="step2Btn" onclick="switchStep(2)" class="step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-900 text-slate-300 hover:text-white border border-emerald-700">
+                2. Model Matematika
+            </button>
+            <button id="step3Btn" onclick="switchStep(3)" class="step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-900 text-slate-300 hover:text-white border border-emerald-700">
+                3. Metode Penyelesaian
+            </button>
+            <button id="step4Btn" onclick="switchStep(4)" class="step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-900 text-slate-300 hover:text-white border border-emerald-700">
+                4. Kesimpulan Fiqih & Sains
+            </button>
+        </div>
+
+        <!-- Step Content Boxes -->
+        <div id="step1" class="step-content">
+            <h3 class="text-xl sm:text-2xl font-bold text-amber-400 mb-3">Langkah 1: Menentukan Pemisalan Variabel</h3>
+            <p class="text-slate-200 text-xs sm:text-sm mb-5 leading-relaxed">
+                Dari teks ayat Al-Qur'an, terdapat dua besaran waktu yang tidak diketahui nilainya jika belum dianalisis:
+            </p>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="bg-emerald-900/80 p-5 rounded-2xl border border-emerald-700">
+                    <span class="text-amber-400 font-mono text-2xl font-black">x</span>
+                    <p class="text-white font-bold mt-1">Masa Mengandung / Kehamilan</p>
+                    <p class="text-slate-300 text-xs mt-1">Durasi ibu mengandung janin dalam rahim (satuan: bulan).</p>
+                </div>
+                <div class="bg-emerald-900/80 p-5 rounded-2xl border border-emerald-700">
+                    <span class="text-amber-400 font-mono text-2xl font-black">y</span>
+                    <p class="text-white font-bold mt-1">Masa Menyapih Anak</p>
+                    <p class="text-slate-300 text-xs mt-1">Durasi memberikan ASI hingga anak disapih (satuan: bulan).</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="step2" class="step-content hidden">
+            <h3 class="text-xl sm:text-2xl font-bold text-amber-400 mb-3">Langkah 2: Membentuk Sistem Persamaan Linear</h3>
+            <p class="text-slate-200 text-xs sm:text-sm mb-5">
+                Susun kalimat verbal dalam ayat menjadi bentuk aljabar matematika:
+            </p>
+            <div class="space-y-4">
+                <div class="bg-emerald-900/80 p-4 rounded-2xl border border-emerald-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="bg-emerald-800 text-amber-300 text-xs font-bold px-2.5 py-1 rounded-md">QS. Al-Ahqaf: 15</span>
+                        <p class="text-xs sm:text-sm text-slate-200 mt-1">"Mengandungnya sampai menyapihnya adalah 30 bulan"</p>
+                    </div>
+                    <span class="font-mono text-lg sm:text-xl font-black text-amber-400">x + y = 30</span>
+                </div>
+                <div class="bg-emerald-900/80 p-4 rounded-2xl border border-emerald-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="bg-emerald-800 text-amber-300 text-xs font-bold px-2.5 py-1 rounded-md">QS. Luqman: 14</span>
+                        <p class="text-xs sm:text-sm text-slate-200 mt-1">"Menyapihnya dalam dua tahun (2 × 12 bulan)"</p>
+                    </div>
+                    <span class="font-mono text-lg sm:text-xl font-black text-amber-400">y = 24</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="step3" class="step-content hidden">
+            <h3 class="text-xl sm:text-2xl font-bold text-amber-400 mb-3">Langkah 3: Menggunakan Metode Substitusi</h3>
+            <p class="text-slate-200 text-xs sm:text-sm mb-4">
+                Substitusikan nilai <span class="font-mono text-amber-400 font-bold">y = 24</span> dari Persamaan (2) ke dalam Persamaan (1):
+            </p>
+            <div class="bg-emerald-900 p-5 rounded-2xl font-mono text-emerald-200 text-xs sm:text-sm space-y-2 border border-emerald-700">
+                <p>x + y = 30</p>
+                <p class="text-amber-300">x + (24) = 30</p>
+                <p>x = 30 - 24</p>
+                <p class="text-xl font-bold text-amber-400 pt-1">x = 6 Bulan</p>
+            </div>
+        </div>
+
+        <div id="step4" class="step-content hidden">
+            <h3 class="text-xl sm:text-2xl font-bold text-amber-400 mb-3">Langkah 4: Interpretasi & Hikmah Syariah</h3>
+            <div class="bg-emerald-900/90 p-5 rounded-2xl border border-emerald-700 space-y-4">
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-circle-check text-amber-400 text-lg mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold text-white text-sm sm:text-base">Masa Kandungan Minimal = 6 Bulan</h4>
+                        <p class="text-slate-200 text-xs mt-1 leading-relaxed">
+                            Secara medis & kebidanan modern, janin usia 24 minggu (6 bulan) adalah batas usia <em>viabilitas</em> minimal di mana paru-paru dan organ telah siap bertahan hidup di luar rahim.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 pt-3 border-t border-emerald-800">
+                    <i class="fa-solid fa-circle-check text-amber-400 text-lg mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold text-white text-sm sm:text-base">Masa Menyusui Sempurna = 24 Bulan (2 Tahun)</h4>
+                        <p class="text-slate-200 text-xs mt-1 leading-relaxed">
+                            Rekomendasi medis WHO dan syariah Islam menyarankan ASI eksklusif hingga 2 tahun untuk pembentukan sistem imun optimal anak.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="mt-6 flex justify-between items-center pt-4 border-t border-emerald-800">
+            <button id="prevBtn" onclick="navigateStep(-1)" class="px-4 py-2 bg-emerald-900 hover:bg-emerald-800 text-slate-300 rounded-xl text-xs sm:text-sm font-semibold disabled:opacity-40 transition border border-emerald-700" disabled>
+                <i class="fa-solid fa-arrow-left mr-1"></i> Sebelumnya
+            </button>
+            <span id="stepIndicator" class="text-xs text-amber-400 font-bold">Langkah 1 dari 4</span>
+            <button id="nextBtn" onclick="navigateStep(1)" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-emerald-950 rounded-xl text-xs sm:text-sm font-extrabold transition shadow-md">
+                Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- BAGIAN 2: PAPAN VIRTUAL PERKALIAN SILANG (CRAMER METHOD) -->
+    <section id="papan-spldv" class="w-full max-w-5xl bg-emerald-950 rounded-3xl p-5 sm:p-8 shadow-2xl border-2 border-emerald-800 space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-emerald-800 pb-4 gap-2">
+            <div>
+                <span class="text-amber-400 font-bold uppercase tracking-wider text-xs">Modul 2: Peraga Matriks & Eliminasi</span>
+                <h2 class="text-xl sm:text-3xl font-extrabold text-white mt-0.5">Papan Virtual SPLDV (Perkalian Silang)</h2>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="setElimTarget('X')" id="btn-elim-x" class="px-3 py-1.5 rounded-xl font-bold text-xs bg-amber-500 text-emerald-950 shadow-md">Cari Nilai X</button>
+                <button onclick="setElimTarget('Y')" id="btn-elim-y" class="px-3 py-1.5 rounded-xl font-bold text-xs bg-emerald-900 text-slate-300 border border-emerald-700">Cari Nilai Y</button>
+            </div>
+        </div>
+
+        <!-- Input Parameter Persamaan -->
+        <div class="bg-emerald-900/70 p-4 rounded-2xl border border-emerald-700 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+                <span class="text-xs font-bold text-amber-300">Persamaan 1: (a1·x + b1·y = c1)</span>
+                <div class="flex gap-1.5 sm:gap-2 items-center">
+                    <!-- Input a1 dengan Tanda -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <select id="sign-a1" onchange="updatePapan()" class="bg-emerald-800 text-amber-300 text-xs font-black px-1 py-2 focus:outline-none border-r border-emerald-700">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                        </select>
+                        <input type="number" id="papan-a1" value="1" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+
+                    <!-- Operator + / - antara X dan Y -->
+                    <select id="op-pers1" onchange="updatePapan()" class="bg-amber-500 text-emerald-950 text-xs font-black px-1.5 py-2 rounded-lg focus:outline-none">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                    </select>
+
+                    <!-- Input b1 -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <input type="number" id="papan-b1" value="1" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+
+                    <span class="text-xs font-bold text-amber-400">=</span>
+
+                    <!-- Input c1 dengan Tanda -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <select id="sign-c1" onchange="updatePapan()" class="bg-emerald-800 text-amber-300 text-xs font-black px-1 py-2 focus:outline-none border-r border-emerald-700">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                        </select>
+                        <input type="number" id="papan-c1" value="30" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <span class="text-xs font-bold text-amber-300">Persamaan 2: (a2·x + b2·y = c2)</span>
+                <div class="flex gap-1.5 sm:gap-2 items-center">
+                    <!-- Input a2 dengan Tanda -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <select id="sign-a2" onchange="updatePapan()" class="bg-emerald-800 text-amber-300 text-xs font-black px-1 py-2 focus:outline-none border-r border-emerald-700">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                        </select>
+                        <input type="number" id="papan-a2" value="0" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+
+                    <!-- Operator + / - antara X dan Y -->
+                    <select id="op-pers2" onchange="updatePapan()" class="bg-amber-500 text-emerald-950 text-xs font-black px-1.5 py-2 rounded-lg focus:outline-none">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                    </select>
+
+                    <!-- Input b2 -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <input type="number" id="papan-b2" value="1" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+
+                    <span class="text-xs font-bold text-amber-400">=</span>
+
+                    <!-- Input c2 dengan Tanda -->
+                    <div class="flex w-1/3 items-center border border-emerald-600 rounded-xl overflow-hidden bg-emerald-950">
+                        <select id="sign-c2" onchange="updatePapan()" class="bg-emerald-800 text-amber-300 text-xs font-black px-1 py-2 focus:outline-none border-r border-emerald-700">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                        </select>
+                        <input type="number" id="papan-c2" value="24" min="0" onchange="updatePapan()" class="w-full bg-transparent p-1.5 text-center text-xs font-bold text-white focus:outline-none">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAPAN MATRIKS VISUAL -->
+        <div class="bg-amber-600/20 border-4 border-amber-500/80 rounded-3xl p-4 sm:p-6 space-y-6 relative overflow-hidden backdrop-blur-sm">
+            <div class="text-center">
+                <span class="bg-amber-500 text-emerald-950 font-black text-xs px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                    PAPAN ELIMINASI SILANG <span id="papan-mode-title">X</span>
+                </span>
+            </div>
+
+            <!-- Matriks Visual Kolom X, Y, C -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 relative max-w-xl mx-auto">
+                <!-- Kolom X -->
+                <div class="flex flex-col items-center gap-2">
+                    <span class="font-black text-amber-400 text-xs sm:text-sm">Kolom X</span>
+                    <div id="card-a1" class="w-full py-3 bg-emerald-700 text-white font-extrabold text-center rounded-xl border border-emerald-500 shadow-md text-xs sm:text-base">1</div>
+                    <div id="card-a2" class="w-full py-3 bg-emerald-700 text-white font-extrabold text-center rounded-xl border border-emerald-500 shadow-md text-xs sm:text-base">0</div>
+                </div>
+
+                <!-- Simbol Silang 1 -->
+                <div class="absolute left-[30%] top-[45%] -translate-y-1/2 -translate-x-1/2 z-10 text-red-500 text-xl sm:text-3xl font-black drop-shadow-md">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+
+                <!-- Kolom Y -->
+                <div class="flex flex-col items-center gap-2">
+                    <span class="font-black text-amber-400 text-xs sm:text-sm">Kolom Y</span>
+                    <div id="card-b1" class="w-full py-3 bg-emerald-700 text-white font-extrabold text-center rounded-xl border border-emerald-500 shadow-md text-xs sm:text-base">1</div>
+                    <div id="card-b2" class="w-full py-3 bg-emerald-700 text-white font-extrabold text-center rounded-xl border border-emerald-500 shadow-md text-xs sm:text-base">1</div>
+                </div>
+
+                <!-- Simbol Silang 2 -->
+                <div class="absolute left-[64%] top-[45%] -translate-y-1/2 -translate-x-1/2 z-10 text-red-500 text-xl sm:text-3xl font-black drop-shadow-md">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+
+                <!-- Kolom C -->
+                <div class="flex flex-col items-center gap-2">
+                    <span class="font-black text-amber-400 text-xs sm:text-sm">Kolom C</span>
+                    <div id="card-c1" class="w-full py-3 bg-amber-500 text-emerald-950 font-black text-center rounded-xl border border-amber-300 shadow-md text-xs sm:text-base">30</div>
+                    <div id="card-c2" class="w-full py-3 bg-amber-500 text-emerald-950 font-black text-center rounded-xl border border-amber-300 shadow-md text-xs sm:text-base">24</div>
+                </div>
+            </div>
+
+            <!-- Rumus Perkalian Silang -->
+            <div class="bg-emerald-950/90 border border-emerald-700 p-4 rounded-2xl max-w-xl mx-auto space-y-3 font-mono text-center">
+                <div class="text-xs text-amber-300 font-sans font-bold">Kalkulasi Perkalian Silang:</div>
+                <div class="flex items-center justify-center gap-2 text-xs sm:text-sm text-white">
+                    <span id="papan-target-label" class="font-bold text-amber-400">x</span>
+                    <span>=</span>
+                    <div class="flex flex-col items-center">
+                        <span id="papan-num-exp" class="border-b border-white px-2 py-0.5 text-amber-300">(30 · 1) - (24 · 1)</span>
+                        <span id="papan-den-exp" class="px-2 py-0.5 text-emerald-300">(1 · 1) - (0 · 1)</span>
+                    </div>
+                    <span>=</span>
+                    <span id="papan-final-result" class="text-lg font-black text-amber-400 bg-emerald-900 px-3 py-1 rounded-xl border border-emerald-700">6</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAGIAN 3: PAPAN UTAMA SIMULASI BAR MODEL SINGAPURA -->
+    <main class="w-full max-w-5xl bg-emerald-950 rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border-2 border-emerald-800 space-y-6">
+        <div class="border-b border-emerald-800 pb-3">
+            <span class="text-amber-400 font-bold uppercase tracking-wider text-xs">Modul 3: Visual Balok Singapura</span>
+            <h2 class="text-xl sm:text-3xl font-extrabold text-white mt-0.5">Singapore Bar Model Math</h2>
+        </div>
+        
+        <!-- CONTROL BAR / PILIH SOAL -->
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-emerald-900/80 p-4 rounded-2xl border border-emerald-700">
+            <div class="flex-1 space-y-1">
+                <label for="bar-preset" class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-book-open"></i> Pilih Skenario Studi Kasus:
+                </label>
+                <select id="bar-preset" onchange="changePreset()" class="w-full bg-emerald-950 text-white font-bold border-2 border-amber-400/80 rounded-xl px-3 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <option value="belanja">1. Kasus Belanja: 3 Buku + 2 Pensil = Rp16.000 & 1 Buku + 2 Pensil = Rp10.000</option>
+                    <option value="quran">2. Kasus Integrasi Al-Qur'an: QS. Al-Ahqaf & Luqman (Masa Kandungan & Menyapih)</option>
+                    <option value="selisih">3. Kasus Perbandingan Usia: Kakak & Adik</option>
+                    <option value="kustom">4. Custom Mode (Input Angka Sendiri)</option>
+                </select>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex items-center gap-2">
+                <button id="btn-next-step" onclick="nextStep()" class="flex-1 md:flex-initial px-5 py-3 bg-amber-500 hover:bg-amber-400 active:scale-95 text-emerald-950 font-black rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-scissors"></i> <span id="btn-step-label">Simulasikan Pemotongan Batang</span>
+                </button>
+                <button onclick="resetSim()" class="px-3.5 py-3 bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-emerald-200 font-bold rounded-xl text-xs sm:text-sm transition" title="Reset Tampilan">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- FORM CUSTOM INPUT (Hidden default) -->
+        <div id="custom-input-box" class="hidden bg-emerald-900/50 p-4 rounded-2xl border border-amber-400/30 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-amber-300">Persamaan 1: (a1 · x + b1 · y = c1)</span>
+                <div class="flex gap-2">
+                    <input type="number" id="custom-a1" value="2" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                    <input type="number" id="custom-b1" value="1" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                    <input type="number" id="custom-c1" value="14" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                </div>
+            </div>
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-amber-300">Persamaan 2: (a2 · x + b2 · y = c2)</span>
+                <div class="flex gap-2">
+                    <input type="number" id="custom-a2" value="1" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                    <input type="number" id="custom-b2" value="1" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                    <input type="number" id="custom-c2" value="10" min="0" class="w-1/3 bg-emerald-950 p-2 text-center rounded-lg border border-emerald-700 text-xs font-bold text-white">
+                </div>
+            </div>
+            <button onclick="applyCustomInput()" class="sm:col-span-2 py-2 bg-emerald-700 hover:bg-emerald-600 font-bold text-xs text-white rounded-lg">Terapkan Persamaan</button>
+        </div>
+
+        <!-- INSIGHT / GUIDANCE BOX -->
+        <div id="step-guide-box" class="bg-emerald-900 border-2 border-amber-400 p-4 rounded-2xl flex items-start gap-3 shadow-lg">
+            <div class="w-8 h-8 rounded-xl bg-amber-500 text-emerald-950 flex items-center justify-center font-black text-sm shrink-0">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <div class="space-y-1">
+                <h4 id="guide-title" class="text-xs font-bold text-amber-400 uppercase tracking-wider">Langkah 1: Susun Batang Sesuai Persamaan</h4>
+                <p id="guide-text" class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
+                    Setiap variabel digambarkan sebagai balok warna. Perhatikan sejauh mana balok-balok tersebut mempunyai panjang yang persis sama.
+                </p>
+            </div>
+        </div>
+
+        <!-- PANDUAN CARA MEMBACA BAR MODEL (UNTUK ORANG AWAM) -->
+        <div class="bg-emerald-900/60 border border-emerald-700/70 p-4 rounded-2xl space-y-3">
+            <h4 class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-circle-info"></i> Cara Membaca Visualisasi Batang (Bar Model):
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-200">
+                <div class="bg-emerald-950/80 p-3 rounded-xl border border-emerald-800 flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-md bg-amber-500 text-emerald-950 flex items-center justify-center font-black text-xs shrink-0">1</span>
+                    <div>
+                        <strong class="text-amber-300 block mb-0.5">Balok Kuning (x) & Hijau (y)</strong>
+                        <p class="text-slate-300 text-[11px] leading-tight">Panjang balok sesuai nilainya. 1 Kotak = 1 Unit Barang/Nilai.</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-950/80 p-3 rounded-xl border border-emerald-800 flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-md bg-amber-500 text-emerald-950 flex items-center justify-center font-black text-xs shrink-0">2</span>
+                    <div>
+                        <strong class="text-amber-300 block mb-0.5">Panjang Sejajar (Persamaan)</strong>
+                        <p class="text-slate-300 text-[11px] leading-tight">Makin banyak unit, makin panjang barisnya ke kanan hingga mencapai Total Nilai.</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-950/80 p-3 rounded-xl border border-emerald-800 flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-md bg-amber-500 text-emerald-950 flex items-center justify-center font-black text-xs shrink-0">3</span>
+                    <div>
+                        <strong class="text-amber-300 block mb-0.5">Pemotongan (Eliminasi)</strong>
+                        <p class="text-slate-300 text-[11px] leading-tight">Bandingkan Baris 1 & 2! Potong balok yang keduannya sama panjang untuk cari sisa selisihnya.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAIL STEP-BY-STEP EXPLANATION BOX (PENJELASAN RINCI) -->
+        <div id="detail-explanation-box" class="bg-emerald-900/90 border border-emerald-700/80 p-5 rounded-2xl space-y-4 shadow-xl">
+            <div class="flex items-center justify-between border-b border-emerald-800 pb-3">
+                <h3 class="text-sm font-extrabold text-amber-400 uppercase tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-square-root-variable"></i> Penjelasan Detail & Analisis Matematika
+                </h3>
+                <span id="badge-mode-step" class="text-[10px] border border-amber-400/30 text-amber-300 px-2.5 py-0.5 rounded-full font-bold">Langkah 1: Pemodelan</span>
+            </div>
+            
+            <div id="detail-explanation-content" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-200">
+                <!-- Content generated dynamically -->
+            </div>
+        </div>
+
+        <!-- AREA CANVAS VISUALISASI BATANG PROPORSI -->
+        <div class="bg-slate-950 p-4 sm:p-6 rounded-3xl border border-emerald-800/80 space-y-6 shadow-inner relative">
+            
+            <!-- MODEL BARIS 1 -->
+            <div class="space-y-2">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                    <span id="label-bar-1" class="text-xs sm:text-sm font-extrabold text-amber-400">Kondisi 1: 3 Buku (x) + 2 Pensil (y)</span>
+                    <span id="val-bar-1" class="bg-emerald-900 border border-emerald-600 px-3 py-1 rounded-xl text-amber-300 font-mono font-bold text-xs sm:text-sm">Total = Rp 16.000</span>
+                </div>
+                
+                <div id="container-bar-1" class="w-full min-h-[72px] bg-emerald-950/80 p-2 rounded-2xl border border-emerald-800 flex items-center gap-1.5 overflow-x-auto custom-scrollbar relative">
+                    <!-- Dynamic Bars Generated Here -->
+                </div>
+            </div>
+
+            <!-- GARIS PENJELAS PERBANDINGAN SILANG -->
+            <div id="visual-comparator" class="hidden my-2 p-3 bg-amber-500/10 border-y border-dashed border-amber-400/50 rounded-xl flex items-center justify-between text-amber-300 text-xs font-bold">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-down-long"></i> Potongan Bagian Yang Sama (1x + 2y)</span>
+                <span class="text-amber-400 font-black"><i class="fa-solid fa-minus"></i> Selisih Panjang = <span id="visual-diff-value">Rp 6.000</span></span>
+            </div>
+
+            <!-- MODEL BARIS 2 -->
+            <div class="space-y-2">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                    <span id="label-bar-2" class="text-xs sm:text-sm font-extrabold text-amber-400">Kondisi 2: 1 Buku (x) + 2 Pensil (y)</span>
+                    <span id="val-bar-2" class="bg-emerald-900 border border-emerald-600 px-3 py-1 rounded-xl text-amber-300 font-mono font-bold text-xs sm:text-sm">Total = Rp 10.000</span>
+                </div>
+
+                <div id="container-bar-2" class="w-full min-h-[72px] bg-emerald-950/80 p-2 rounded-2xl border border-emerald-800 flex items-center gap-1.5 overflow-x-auto custom-scrollbar relative">
+                    <!-- Dynamic Bars Generated Here -->
+                </div>
+            </div>
+
+            <!-- INDIKATOR ANALISIS HASIL PEMOTONGAN -->
+            <div id="result-bar-box" class="hidden pt-4 border-t-2 border-dashed border-emerald-800/80 space-y-3">
+                <div class="text-xs font-bold uppercase text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-equals"></i> Hasil Analisis Selisih Visual:
+                </div>
+                <div id="result-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Dynamic Result Card -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- REKAP HASIL AKHIR (KESIMPULAN) -->
+        <div id="final-summary-box" class="bg-emerald-900/90 border border-amber-400/50 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-500 text-emerald-950 flex items-center justify-center font-black text-lg shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold text-amber-300 uppercase">Kesimpulan Nilai Variabel:</h5>
+                    <p id="summary-values-text" class="text-sm sm:text-base font-extrabold text-white">
+                        Nilai x (Buku) = Rp 3.000 | Nilai y (Pensil) = Rp 3.500
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-3 py-1.5 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-xl text-xs font-bold">
+                    Konstruktivisme Visual
+                </span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPT SIMULASI KASUS AL-QURAN, PAPAN SPLDV & BAR MODEL -->
+    <script>
+        // --- MODUL 1: SIMULASI CASE AL-QURAN SCRIPT ---
+        let stepAlquran = 1;
+        const totalAlquranSteps = 4;
+
+        function switchStep(step) {
+            stepAlquran = step;
+            for (let i = 1; i <= totalAlquranSteps; i++) {
+                const content = document.getElementById(`step${i}`);
+                const btn = document.getElementById(`step${i}Btn`);
+
+                if (content) {
+                    if (i === step) content.classList.remove('hidden');
+                    else content.classList.add('hidden');
+                }
+
+                if (btn) {
+                    if (i === step) {
+                        btn.className = "step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-600 text-white shadow-md";
+                    } else {
+                        btn.className = "step-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-900 text-slate-300 hover:text-white border border-emerald-700";
+                    }
+                }
+            }
+
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicator = document.getElementById('stepIndicator');
+
+            if (prevBtn) prevBtn.disabled = (stepAlquran === 1);
+            if (nextBtn) {
+                if (stepAlquran === totalAlquranSteps) {
+                    nextBtn.innerHTML = 'Ulangi Simulasi <i class="fa-solid fa-rotate-right ml-1"></i>';
+                } else {
+                    nextBtn.innerHTML = 'Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>';
+                }
+            }
+            if (indicator) indicator.textContent = `Langkah ${stepAlquran} dari ${totalAlquranSteps}`;
+        }
+
+        function navigateStep(dir) {
+            let target = stepAlquran + dir;
+            if (target > totalAlquranSteps) target = 1;
+            if (target >= 1 && target <= totalAlquranSteps) switchStep(target);
+        }
+
+        // --- MODUL 2: PAPAN PERKALIAN SILANG (CRAMER) SCRIPT ---
+        let elimTarget = 'X';
+
+        function setElimTarget(target) {
+            elimTarget = target;
+            const btnX = document.getElementById('btn-elim-x');
+            const btnY = document.getElementById('btn-elim-y');
+
+            if (target === 'X') {
+                btnX.className = "px-3 py-1.5 rounded-xl font-bold text-xs bg-amber-500 text-emerald-950 shadow-md";
+                btnY.className = "px-3 py-1.5 rounded-xl font-bold text-xs bg-emerald-900 text-slate-300 border border-emerald-700";
+            } else {
+                btnY.className = "px-3 py-1.5 rounded-xl font-bold text-xs bg-amber-500 text-emerald-950 shadow-md";
+                btnX.className = "px-3 py-1.5 rounded-xl font-bold text-xs bg-emerald-900 text-slate-300 border border-emerald-700";
+            }
+
+            document.getElementById('papan-mode-title').innerText = target;
+            document.getElementById('papan-target-label').innerText = target.toLowerCase();
+            updatePapan();
+        }
+
+        function updatePapan() {
+            // Ambil Tanda Plus/Minus
+            const signA1 = document.getElementById('sign-a1').value === '-' ? -1 : 1;
+            const opPers1 = document.getElementById('op-pers1').value === '-' ? -1 : 1;
+            const signC1 = document.getElementById('sign-c1').value === '-' ? -1 : 1;
+
+            const signA2 = document.getElementById('sign-a2').value === '-' ? -1 : 1;
+            const opPers2 = document.getElementById('op-pers2').value === '-' ? -1 : 1;
+            const signC2 = document.getElementById('sign-c2').value === '-' ? -1 : 1;
+
+            // Hitung Nilai Bertanda Nyata
+            const a1 = (parseFloat(document.getElementById('papan-a1').value) || 0) * signA1;
+            const b1 = (parseFloat(document.getElementById('papan-b1').value) || 0) * opPers1;
+            const c1 = (parseFloat(document.getElementById('papan-c1').value) || 0) * signC1;
+
+            const a2 = (parseFloat(document.getElementById('papan-a2').value) || 0) * signA2;
+            const b2 = (parseFloat(document.getElementById('papan-b2').value) || 0) * opPers2;
+            const c2 = (parseFloat(document.getElementById('papan-c2').value) || 0) * signC2;
+
+            document.getElementById('card-a1').innerText = a1;
+            document.getElementById('card-a2').innerText = a2;
+            document.getElementById('card-b1').innerText = b1;
+            document.getElementById('card-b2').innerText = b2;
+            document.getElementById('card-c1').innerText = c1;
+            document.getElementById('card-c2').innerText = c2;
+
+            const D = (a1 * b2) - (a2 * b1);
+
+            if (elimTarget === 'X') {
+                const Dx = (c1 * b2) - (c2 * b1);
+                document.getElementById('papan-num-exp').innerText = `(${c1} · ${b2}) - (${c2} · ${b1})`;
+                document.getElementById('papan-den-exp').innerText = `(${a1} · ${b2}) - (${a2} · ${b1})`;
+                const res = D !== 0 ? (Dx / D) : 0;
+                document.getElementById('papan-final-result').innerText = Number.isInteger(res) ? res : res.toFixed(2);
+            } else {
+                const Dy = (a1 * c2) - (a2 * c1);
+                document.getElementById('papan-num-exp').innerText = `(${a1} · ${c2}) - (${a2} · ${c1})`;
+                document.getElementById('papan-den-exp').innerText = `(${a1} · ${b2}) - (${a2} · ${b1})`;
+                const res = D !== 0 ? (Dy / D) : 0;
+                document.getElementById('papan-final-result').innerText = Number.isInteger(res) ? res : res.toFixed(2);
+            }
+        }
+
+        // --- MODUL 3: SINGAPORE BAR MODEL SCRIPT ---
+        let currentStep = 1;
+        let activeData = {};
+
+        const presets = {
+            belanja: {
+                title1: "Persamaan 1: 3 Buku (x) + 2 Pensil (y)",
+                val1: "Rp 16.000",
+                raw1: 16000,
+                title2: "Persamaan 2: 1 Buku (x) + 2 Pensil (y)",
+                val2: "Rp 10.000",
+                raw2: 10000,
+                bars1: [
+                    { type: 'x', name: 'Buku', val: 3000, color: 'bg-amber-500 text-emerald-950 border-amber-300' },
+                    { type: 'x', name: 'Buku', val: 3000, color: 'bg-amber-500 text-emerald-950 border-amber-300' },
+                    { type: 'x', name: 'Buku', val: 3000, color: 'bg-amber-500 text-emerald-950 border-amber-300' },
+                    { type: 'y', name: 'Pensil', val: 3500, color: 'bg-emerald-600 text-white border-emerald-400' },
+                    { type: 'y', name: 'Pensil', val: 3500, color: 'bg-emerald-600 text-white border-emerald-400' }
+                ],
+                bars2: [
+                    { type: 'x', name: 'Buku', val: 3000, color: 'bg-amber-500 text-emerald-950 border-amber-300' },
+                    { type: 'y', name: 'Pensil', val: 3500, color: 'bg-emerald-600 text-white border-emerald-400' },
+                    { type: 'y', name: 'Pensil', val: 3500, color: 'bg-emerald-600 text-white border-emerald-400' }
+                ],
+                unitNameX: 'Buku',
+                unitNameY: 'Pensil',
+                unitX: 3000,
+                unitY: 3500,
+                currency: 'Rp ',
+                diffVal: 'Rp 6.000',
+                explainStep1: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Pemodelan Aljabar Formal:</strong>
+                        <p>• Baris I: <code class="text-amber-400 font-mono">3 Buku + 2 Pensil = Rp16.000</code></p>
+                        <p>• Baris II: <code class="text-amber-400 font-mono">1 Buku + 2 Pensil = Rp10.000</code></p>
+                        <p class="text-slate-400 text-xs">Panjang setiap balok dibuat presisi sesuai nilai nominal harganya secara visual.</p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Petunjuk Perbandingan Orang Awam:</strong>
+                        <p>Bandingkan Baris 1 dan Baris 2! Keduanya sama-sama memiliki <strong class="text-amber-300">[1 Buku + 2 Pensil]</strong> yang panjangnya persis seimbang.</p>
+                        <p class="text-slate-400 text-xs">Satu-satunya penyebab Baris 1 lebih mahal Rp6.000 adalah karena adanya <strong class="text-white">kelebihan 2 Buku</strong> di bagian awal!</p>
+                    </div>
+                `,
+                explainStep2: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Eliminasi Visual (Pemotongan Batang):</strong>
+                        <p>Potong/abaikan pasangan balok yang sama panjang pada kedua baris:</p>
+                        <p class="font-mono text-emerald-300">(3 Buku + 2 Pensil) - (1 Buku + 2 Pensil) = 16.000 - 10.000</p>
+                        <p class="font-mono text-amber-400 font-bold text-base">2 Buku = Rp6.000 &rarr; 1 Buku = Rp3.000</p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Menghitung Harga Pensil:</strong>
+                        <p>Masukkan nilai 1 Buku (Rp3.000) ke Baris 2:</p>
+                        <p class="font-mono text-emerald-300">Rp3.000 + 2 Pensil = Rp10.000</p>
+                        <p class="font-mono text-amber-400 font-bold">2 Pensil = Rp7.000 &rarr; 1 Pensil = Rp3.500</p>
+                    </div>
+                `
+            },
+            quran: {
+                title1: "QS. Al-Ahqaf: 15 (Masa Mengandung x + Masa Menyapih y)",
+                val1: "30 Bulan",
+                raw1: 30,
+                title2: "QS. Luqman: 14 (Masa Menyapih y saja = 2 Tahun)",
+                val2: "24 Bulan",
+                raw2: 24,
+                bars1: [
+                    { type: 'x', name: 'Mengandung', val: 6, color: 'bg-amber-500 text-emerald-950 border-amber-300' },
+                    { type: 'y', name: 'Menyapih', val: 24, color: 'bg-emerald-600 text-white border-emerald-400' }
+                ],
+                bars2: [
+                    { type: 'y', name: 'Menyapih', val: 24, color: 'bg-emerald-600 text-white border-emerald-400' }
+                ],
+                unitNameX: 'Mengandung (x)',
+                unitNameY: 'Menyapih (y)',
+                unitX: 6,
+                unitY: 24,
+                currency: '',
+                diffVal: '6 Bulan',
+                explainStep1: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Pemodelan Ayat Al-Qur'an:</strong>
+                        <p>• Baris I (Al-Ahqaf: 15): <code class="text-amber-400 font-mono">Kehamilan + Menyapih = 30 Bulan</code></p>
+                        <p>• Baris II (Luqman: 14): <code class="text-amber-400 font-mono">Masa Menyapih = 24 Bulan (2 Tahun)</code></p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Logika Sederhana Sahabat Ali RA:</strong>
+                        <p>Balok total kehamilan dan menyapih adalah 30 bulan. Karena balok menyapih sudah pasti 24 bulan, maka sisa selisih baloknya adalah durasi kehamilan minimal!</p>
+                    </div>
+                `,
+                explainStep2: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Eliminasi Substitusi Visual:</strong>
+                        <p>Potong balok masa menyapih (24 Bulan) dari total balok 30 bulan:</p>
+                        <p class="font-mono text-amber-400 font-bold text-base">Masa Kehamilan (x) = 30 - 24 = 6 Bulan</p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Hikmah Kedokteran & Syariah:</strong>
+                        <p>Kehamilan 6 bulan (24 minggu) adalah usia viabilitas medis paling awal janin dapat tumbuh selamat di luar rahim.</p>
+                    </div>
+                `
+            },
+            selisih: {
+                title1: "Total Usia Kakak (x) + Usia Adik (y)",
+                val1: "28 Tahun",
+                raw1: 28,
+                title2: "Selisih Usia (Kakak lebih tua 4 tahun dari Adik)",
+                val2: "4 Tahun",
+                raw2: 4,
+                bars1: [
+                    { type: 'y', name: 'Adik', val: 12, color: 'bg-emerald-600 text-white border-emerald-400' },
+                    { type: 'y', name: 'Adik', val: 12, color: 'bg-emerald-600 text-white border-emerald-400' },
+                    { type: 'x', name: 'Selisih', val: 4, color: 'bg-amber-500 text-emerald-950 border-amber-300' }
+                ],
+                bars2: [
+                    { type: 'x', name: 'Selisih', val: 4, color: 'bg-amber-500 text-emerald-950 border-amber-300' }
+                ],
+                unitNameX: 'Selisih',
+                unitNameY: 'Usia Adik',
+                unitX: 4,
+                unitY: 12,
+                currency: '',
+                diffVal: '24 Tahun',
+                explainStep1: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Pemodelan Usia Kakak & Adik:</strong>
+                        <p>Usia Kakak diwakili oleh <strong class="text-amber-300">[1 Balok Usia Adik + Balok Selisih 4 Thn]</strong>.</p>
+                        <p>Maka Total Usia keduanya adalah 2 Balok Adik + 4 Tahun = 28 Tahun.</p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Konsep Visual Pemotongan:</strong>
+                        <p>Untuk mencari usia Adik, kita cukup membuang/memotong balok selisih 4 tahun dari total 28 tahun!</p>
+                    </div>
+                `,
+                explainStep2: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">1. Menghitung Usia Adik:</strong>
+                        <p class="font-mono text-emerald-300">2 × Usia Adik = 28 - 4 = 24</p>
+                        <p class="font-mono text-amber-400 font-bold text-base">Usia Adik = 24 ÷ 2 = 12 Tahun</p>
+                    </div>
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2">
+                        <strong class="text-amber-300 block text-xs">2. Menghitung Usia Kakak:</strong>
+                        <p class="font-mono text-amber-400 font-bold text-base">Usia Kakak = 12 + 4 = 16 Tahun</p>
+                    </div>
+                `
+            }
+        };
+
+        function renderDetailExplanation() {
+            const container = document.getElementById('detail-explanation-content');
+            const badge = document.getElementById('badge-mode-step');
+            
+            if (currentStep === 1) {
+                badge.innerText = "Langkah 1: Menyusun Persamaan & Batang";
+                container.innerHTML = activeData.explainStep1 || `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 sm:col-span-2">
+                        <strong class="text-amber-300 block text-xs mb-1">Analisis Persamaan Kustom:</strong>
+                        <p>Tersusun dua persamaan aljabar linear. Setiap suku variabel direpresentasikan sebagai unit balok warna yang proporsional.</p>
+                    </div>
+                `;
+            } else {
+                badge.innerText = "Langkah 2: Eliminasi & Substitusi Visual";
+                container.innerHTML = activeData.explainStep2 || `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 sm:col-span-2">
+                        <strong class="text-amber-300 block text-xs mb-1">Analisis Pemotongan Batang Kustom:</strong>
+                        <p>Variabel dihitung dengan membandingkan selisih total dari dua baris balok. Nilai variabel ditemukan melalui <code class="text-amber-400">x = ${activeData.unitX}</code> dan <code class="text-amber-400">y = ${activeData.unitY}</code>.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function nextStep() {
+            const comp = document.getElementById('visual-comparator');
+            const diffVal = document.getElementById('visual-diff-value');
+            
+            if (currentStep === 1) {
+                currentStep = 2;
+                document.getElementById('btn-step-label').innerText = "Ulangi dari Awal";
+                document.getElementById('guide-title').innerText = "Langkah 2: Perbandingan & Pemotongan Batang (Eliminasi Visual)";
+                
+                const key = document.getElementById('bar-preset').value;
+                const resBox = document.getElementById('result-bar-box');
+                const resCards = document.getElementById('result-cards');
+                resBox.classList.remove('hidden');
+
+                if (comp) {
+                    comp.classList.remove('hidden');
+                    diffVal.innerText = activeData.diffVal || 'Selisih Nilai';
+                }
+
+                if (key === 'belanja') {
+                    document.getElementById('guide-text').innerText = "Potong komponen balok [1 Buku + 2 Pensil] yang nilainya sama di kedua baris. Tersisa 2 Buku pada Baris 1 dengan nilai selisih harga (16.000 - 10.000 = 6.000).";
+                    resCards.innerHTML = `
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1">
+                            <span class="text-xs font-bold text-amber-300">Sisa Batang Bersih:</span>
+                            <p class="text-sm font-black text-white">2 Buku (x) = Rp 6.000</p>
+                            <p class="text-xs text-slate-300">Maka 1 Buku = Rp 6.000 ÷ 2 = <strong class="text-amber-400">Rp 3.000</strong></p>
+                        </div>
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1">
+                            <span class="text-xs font-bold text-amber-300">Substitusi Nilai Pensil:</span>
+                            <p class="text-sm font-black text-white">2 Pensil = Rp 10.000 - Rp 3.000 = Rp 7.000</p>
+                            <p class="text-xs text-slate-300">Maka 1 Pensil (y) = <strong class="text-amber-400">Rp 3.500</strong></p>
+                        </div>
+                    `;
+                } else if (key === 'quran') {
+                    document.getElementById('guide-text').innerText = "Potong batang total 30 bulan dengan batang menyapih 24 bulan. Sisa selisih panjangnya adalah masa kehamilan (x).";
+                    resCards.innerHTML = `
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1 sm:col-span-2">
+                            <span class="text-xs font-bold text-amber-300">Masa Mengandung (x):</span>
+                            <p class="text-base font-black text-white">x = 30 Bulan - 24 Bulan = <span class="text-amber-400">6 Bulan</span></p>
+                            <p class="text-xs text-slate-300">Menyimpulkan durasi minimal kehamilan janin secara medis & syariah Al-Qur'an.</p>
+                        </div>
+                    `;
+                } else if (key === 'selisih') {
+                    document.getElementById('guide-text').innerText = "Kurangi total nilai 28 dengan selisih +4. Tersisa 2 unit batang Adik yang sama panjang = 24.";
+                    resCards.innerHTML = `
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1">
+                            <span class="text-xs font-bold text-amber-300">Usia Adik (y):</span>
+                            <p class="text-sm font-black text-white">2 × Adik = 28 - 4 = 24 &rarr; Adik = <span class="text-amber-400">12 Tahun</span></p>
+                        </div>
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1">
+                            <span class="text-xs font-bold text-amber-300">Usia Kakak (x):</span>
+                            <p class="text-sm font-black text-white">Kakak = 12 + 4 = <span class="text-amber-400">16 Tahun</span></p>
+                        </div>
+                    `;
+                } else {
+                    resCards.innerHTML = `
+                        <div class="bg-emerald-900/90 border border-amber-400/50 p-4 rounded-2xl space-y-1 sm:col-span-2">
+                            <span class="text-xs font-bold text-amber-300">Hasil Penyelesaian Kustom:</span>
+                            <p class="text-sm font-black text-white">x = ${activeData.unitX} | y = ${activeData.unitY}</p>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('summary-values-text').innerText = `Nilai x = ${activeData.currency}${activeData.unitX} | Nilai y = ${activeData.currency}${activeData.unitY}`;
+            } else {
+                resetSim();
+            }
+
+            renderBars();
+            renderDetailExplanation();
+        }
+
+        function resetSim() {
+            currentStep = 1;
+            document.getElementById('btn-step-label').innerText = "Simulasikan Pemotongan Batang";
+            document.getElementById('guide-title').innerText = "Langkah 1: Susun Batang Sesuai Persamaan";
+            document.getElementById('guide-text').innerText = "Setiap variabel digambarkan sebagai balok warna. Perhatikan sejauh mana balok-balok tersebut mempunyai panjang yang persis sama.";
+            document.getElementById('result-bar-box').classList.add('hidden');
+            
+            const comp = document.getElementById('visual-comparator');
+            if (comp) comp.classList.add('hidden');
+
+            const key = document.getElementById('bar-preset').value;
+            if (key !== 'kustom') {
+                activeData = presets[key];
+            }
+            
+            document.getElementById('summary-values-text').innerText = `Nilai x (${activeData.unitNameX}) = ${activeData.currency}${activeData.unitX} | Nilai y (${activeData.unitNameY}) = ${activeData.currency}${activeData.unitY}`;
+            renderBars();
+            renderDetailExplanation();
+        }
+
+        function applyCustomInput() {
+            const a1 = parseInt(document.getElementById('custom-a1').value) || 0;
+            const b1 = parseInt(document.getElementById('custom-b1').value) || 0;
+            const c1 = parseFloat(document.getElementById('custom-c1').value) || 0;
+
+            const a2 = parseInt(document.getElementById('custom-a2').value) || 0;
+            const b2 = parseInt(document.getElementById('custom-b2').value) || 0;
+            const c2 = parseFloat(document.getElementById('custom-c2').value) || 0;
+
+            const D = (a1 * b2) - (a2 * b1);
+            let valX = 0, valY = 0;
+            if (D !== 0) {
+                valX = ((c1 * b2) - (c2 * b1)) / D;
+                valY = ((a1 * c2) - (a2 * c1)) / D;
+            }
+
+            const bars1 = [];
+            for(let i=0; i<a1; i++) bars1.push({ type: 'x', name: 'x', val: valX, color: 'bg-amber-500 text-emerald-950 border-amber-300' });
+            for(let i=0; i<b1; i++) bars1.push({ type: 'y', name: 'y', val: valY, color: 'bg-emerald-600 text-white border-emerald-400' });
+
+            const bars2 = [];
+            for(let i=0; i<a2; i++) bars2.push({ type: 'x', name: 'x', val: valX, color: 'bg-amber-500 text-emerald-950 border-amber-300' });
+            for(let i=0; i<b2; i++) bars2.push({ type: 'y', name: 'y', val: valY, color: 'bg-emerald-600 text-white border-emerald-400' });
+
+            activeData = {
+                title1: `Persamaan 1: ${a1}x + ${b1}y`,
+                val1: `= ${c1}`,
+                raw1: c1,
+                title2: `Persamaan 2: ${a2}x + ${b2}y`,
+                val2: `= ${c2}`,
+                raw2: c2,
+                bars1: bars1,
+                bars2: bars2,
+                unitNameX: 'x',
+                unitNameY: 'y',
+                unitX: Number.isInteger(valX) ? valX : valX.toFixed(2),
+                unitY: Number.isInteger(valY) ? valY : valY.toFixed(2),
+                currency: '',
+                diffVal: `Selisih = ${Math.abs(c1 - c2)}`,
+                explainStep1: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2 sm:col-span-2">
+                        <strong class="text-amber-300 block text-xs">Pemodelan Persamaan Kustom:</strong>
+                        <p>• Persamaan 1: <code class="text-amber-400 font-mono">${a1}x + ${b1}y = ${c1}</code></p>
+                        <p>• Persamaan 2: <code class="text-amber-400 font-mono">${a2}x + ${b2}y = ${c2}</code></p>
+                    </div>
+                `,
+                explainStep2: `
+                    <div class="bg-emerald-950/70 p-3.5 rounded-xl border border-emerald-800 space-y-2 sm:col-span-2">
+                        <strong class="text-amber-300 block text-xs">Hasil Penyelesaian Matriks Kustom:</strong>
+                        <p class="font-mono text-emerald-300">Nilai x = <span class="text-amber-400 font-bold">${valX}</span></p>
+                        <p class="font-mono text-emerald-300">Nilai y = <span class="text-amber-400 font-bold">${valY}</span></p>
+                    </div>
+                `
+            };
+
+            resetSim();
+        }
+
+        window.onload = function() {
+            switchStep(1);
+            setElimTarget('X');
+            changePreset();
+        };
+
+        function changePreset() {
+            const key = document.getElementById('bar-preset').value;
+            const customBox = document.getElementById('custom-input-box');
+            
+            if (key === 'kustom') {
+                customBox.classList.remove('hidden');
+                applyCustomInput();
+                return;
+            } else {
+                customBox.classList.add('hidden');
+                activeData = presets[key];
+            }
+            
+            resetSim();
+        }
+
+        function renderBars() {
+            const c1 = document.getElementById('container-bar-1');
+            const c2 = document.getElementById('container-bar-2');
+            const l1 = document.getElementById('label-bar-1');
+            const l2 = document.getElementById('label-bar-2');
+            const v1 = document.getElementById('val-bar-1');
+            const v2 = document.getElementById('val-bar-2');
+
+            if (!activeData || !c1 || !c2) return;
+
+            l1.innerText = activeData.title1;
+            l2.innerText = activeData.title2;
+            v1.innerText = `Total = ${activeData.val1}`;
+            v2.innerText = `Total = ${activeData.val2}`;
+
+            const totalVal1 = activeData.raw1 || 1;
+            const totalVal2 = activeData.raw2 || 1;
+            const maxVal = Math.max(totalVal1, totalVal2);
+
+            const generateBarHtml = (bars, isRow1, totalVal) => {
+                return bars.map(bar => {
+                    const widthPct = Math.max(12, ((bar.val / maxVal) * 100)).toFixed(1);
+                    const isCut = (currentStep === 2 && isRow1 && bar.type === 'y' && document.getElementById('bar-preset').value === 'belanja');
+                    const cutClass = isCut ? 'opacity-25 border-dashed scale-95 grayscale' : 'shadow-md hover:brightness-110';
+                    const numText = activeData.currency ? `${activeData.currency}${bar.val.toLocaleString('id-ID')}` : bar.val;
+                    
+                    return `
+                        <div style="width: ${widthPct}%; min-width: 90px;" class="h-14 px-2 rounded-xl border-2 flex flex-col items-center justify-center text-center transition-all duration-500 bar-transition shrink-0 ${bar.color} ${cutClass}">
+                            <span class="text-[11px] font-black leading-tight">${bar.name}</span>
+                            <span class="text-[10px] opacity-90 font-mono font-semibold">(${numText})</span>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            c1.innerHTML = generateBarHtml(activeData.bars1, true, totalVal1);
+            c2.innerHTML = generateBarHtml(activeData.bars2, false, totalVal2);
+        }
+    </script>
+</body>
+</html>

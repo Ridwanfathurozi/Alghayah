@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator & Visualisasi Grafik SPLDV</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js for rendering linear graph visualizer -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+    <!-- KALKUTOR & GRAPH VISUALIZER SECTION -->
+    <section id="kalkulator" class="w-full max-w-7xl py-12 sm:py-16 bg-slate-100 rounded-3xl border border-slate-200 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-emerald-600 font-bold uppercase tracking-wider text-xs sm:text-sm">Eksplorasi Mandiri</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Kalkulator &amp; Visualisasi Grafik SPLDV</h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base">
+                    Uji coba berbagai persamaan linear dua variabel dan lihat perpotongan grafiknya secara otomatis!
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Input Controls -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b pb-3 flex items-center">
+                        <i class="fa-solid fa-sliders text-emerald-600 mr-2"></i> Input Koefisien Persamaan
+                    </h3>
+
+                    <!-- Persamaan 1 -->
+                    <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
+                        <p class="text-xs font-bold text-emerald-800 uppercase mb-2">Persamaan 1: a₁x + b₁y = c₁</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">a₁ (x)</label>
+                                <input type="number" id="a1" value="1" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">b₁ (y)</label>
+                                <input type="number" id="b1" value="1" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">c₁ (Konstanta)</label>
+                                <input type="number" id="c1" value="30" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 font-semibold text-center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persamaan 2 -->
+                    <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-100">
+                        <p class="text-xs font-bold text-amber-800 uppercase mb-2">Persamaan 2: a₂x + b₂y = c₂</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">a₂ (x)</label>
+                                <input type="number" id="a2" value="0" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">b₂ (y)</label>
+                                <input type="number" id="b2" value="1" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">c₂ (Konstanta)</label>
+                                <input type="number" id="c2" value="24" step="any" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500 font-semibold text-center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateAndGraph()" class="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-md transition">
+                        <i class="fa-solid fa-chart-line mr-2"></i> Hitung &amp; Plot Grafik
+                    </button>
+
+                    <!-- Result Box -->
+                    <div id="calcResult" class="p-4 bg-slate-900 text-white rounded-2xl space-y-2">
+                        <p class="text-xs text-slate-400 uppercase font-bold">Titik Potong / Penyelesaian (x, y):</p>
+                        <div class="text-xl font-extrabold text-amber-400 font-mono" id="solutionText">
+                            (x = 6, y = 24)
+                        </div>
+                        <p class="text-xs text-slate-300" id="explanationText">
+                            Artinya garis Persamaan 1 dan Persamaan 2 berpotongan tepat di koordinat (6, 24).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Canvas Graph Visualizer -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center">
+                        <i class="fa-solid fa-circle-nodes text-amber-500 mr-2"></i> Visualisasi Titik Potong Garis
+                    </h3>
+                    <div class="relative w-full h-[360px] sm:h-[400px]">
+                        <canvas id="spldvChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let chartInstance = null;
+
+        // Function to format numbers cleanly
+        function formatNum(num) {
+            if (Number.isInteger(num)) return num.toString();
+            return parseFloat(num.toFixed(2)).toString();
+        }
+
+        function calculateAndGraph() {
+            // Read input values
+            const a1 = parseFloat(document.getElementById('a1').value) || 0;
+            const b1 = parseFloat(document.getElementById('b1').value) || 0;
+            const c1 = parseFloat(document.getElementById('c1').value) || 0;
+
+            const a2 = parseFloat(document.getElementById('a2').value) || 0;
+            const b2 = parseFloat(document.getElementById('b2').value) || 0;
+            const c2 = parseFloat(document.getElementById('c2').value) || 0;
+
+            const solutionText = document.getElementById('solutionText');
+            const explanationText = document.getElementById('explanationText');
+
+            // Calculate determinant D = a1*b2 - a2*b1
+            const D = a1 * b2 - a2 * b1;
+            const Dx = c1 * b2 - c2 * b1;
+            const Dy = a1 * c2 - a2 * c1;
+
+            let solX = null;
+            let solY = null;
+
+            if (D === 0) {
+                if (Dx === 0 && Dy === 0) {
+                    solutionText.innerHTML = '<span class="text-emerald-400">Tak Hingga Solusi</span>';
+                    explanationText.textContent = 'Kedua garis saling berhimpit (persamaan ekuivalen).';
+                } else {
+                    solutionText.innerHTML = '<span class="text-red-400">Tidak Ada Solusi</span>';
+                    explanationText.textContent = 'Kedua garis sejajar dan tidak akan pernah berpotongan.';
+                }
+            } else {
+                solX = Dx / D;
+                solY = Dy / D;
+
+                solutionText.textContent = `(x = ${formatNum(solX)}, y = ${formatNum(solY)})`;
+                explanationText.textContent = `Artinya garis Persamaan 1 dan Persamaan 2 berpotongan tepat di koordinat (${formatNum(solX)}, ${formatNum(solY)}).`;
+            }
+
+            // Determine X range for rendering plot lines
+            let centerX = (solX !== null) ? solX : 0;
+            let minX = Math.floor(centerX - 15);
+            let maxX = Math.ceil(centerX + 15);
+
+            if (minX < -10) minX = -10;
+            if (maxX < 35) maxX = 35;
+
+            // Generate line points
+            const line1Data = [];
+            const line2Data = [];
+
+            for (let x = minX; x <= maxX; x += (maxX - minX) / 40) {
+                // Line 1: a1*x + b1*y = c1 => y = (c1 - a1*x) / b1
+                if (b1 !== 0) {
+                    let y1 = (c1 - a1 * x) / b1;
+                    line1Data.push({ x: x, y: y1 });
+                } else if (a1 !== 0) {
+                    // Vertical line x = c1/a1
+                    let fixedX = c1 / a1;
+                    line1Data.push({ x: fixedX, y: -50 });
+                    line1Data.push({ x: fixedX, y: 50 });
+                }
+
+                // Line 2: a2*x + b2*y = c2 => y = (c2 - a2*x) / b2
+                if (b2 !== 0) {
+                    let y2 = (c2 - a2 * x) / b2;
+                    line2Data.push({ x: x, y: y2 });
+                } else if (a2 !== 0) {
+                    // Vertical line x = c2/a2
+                    let fixedX = c2 / a2;
+                    line2Data.push({ x: fixedX, y: -50 });
+                    line2Data.push({ x: fixedX, y: 50 });
+                }
+            }
+
+            // Intersection point dataset
+            const intersectionData = (solX !== null && solY !== null) ? [{ x: solX, y: solY }] : [];
+
+            // Draw Chart using Chart.js
+            const ctx = document.getElementById('spldvChart').getContext('2d');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: `Persamaan 1 (${a1}x + ${b1}y = ${c1})`,
+                            data: line1Data,
+                            showLine: true,
+                            borderColor: '#059669', // Emerald 600
+                            backgroundColor: '#059669',
+                            borderWidth: 2.5,
+                            pointRadius: 0
+                        },
+                        {
+                            label: `Persamaan 2 (${a2}x + ${b2}y = ${c2})`,
+                            data: line2Data,
+                            showLine: true,
+                            borderColor: '#d97706', // Amber 600
+                            backgroundColor: '#d97706',
+                            borderWidth: 2.5,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Titik Potong (Solusi)',
+                            data: intersectionData,
+                            backgroundColor: '#ef4444', // Red 500
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            pointRadius: 7,
+                            pointHoverRadius: 9
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Plus Jakarta Sans', sans-serif",
+                                    size: 11,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: (${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(2)})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Sumbu X (Variabel x)',
+                                font: { weight: 'bold', size: 12 }
+                            },
+                            grid: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Sumbu Y (Variabel y)',
+                                font: { weight: 'bold', size: 12 }
+                            },
+                            grid: {
+                                color: '#e2e8f0'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize chart on page load
+        window.onload = function() {
+            calculateAndGraph();
+        };
+    </script>
+</body>
+</html>
